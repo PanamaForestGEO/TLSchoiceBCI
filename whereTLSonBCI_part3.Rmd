@@ -3,26 +3,26 @@ title: 'where to place TLS plots in BCI: (3) Make figures to evaluate plot place
 author: "Helene Muller-Landau"
 date: "2023-09-11"
 output:
-  html_document: default
-  word_document: default
   pdf_document: default
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Background
+# Background
 
 This assumes have already run "whereTLSonBCI_part1a.Rmd", "whereTLSonBCI_part1b.Rmd" and "whereTLSonBCI_part2.Rmd" or have the products of those functions available (in directory usedata).  
 
 
-### Objectives
+## Objectives
 
-The objective of this document is to explore potential locations for three (or possibly more) 1-ha plots within the BCI 50-ha plot to be scanned with a Terrestrial Laser Scanner (TLS) for GEOTREES.  These plots should represent the variation in forest structure within the site.  Ideally forest structure is relatively homogenous within the chosen plots, and overall the set of plots spans the variation in forest structure within the entire 50-ha plot, but with a bias towards capturing more bigger trees.  
+The objective of this document is to explore potential locations for three (or possibly more) 1-ha plots within the BCI 50-ha plot to be scanned with a Terrestrial Laser Scanner (TLS) for GEOTREES.  These plots should represent the variation in forest structure within the site.  Ideally forest structure is relatively homogeneous within the chosen plots, and overall the set of plots spans the variation in forest structure within the entire 50-ha plot, but with a bias towards capturing more bigger trees.  
 
 
-### Potential future additions 
+## Potential future additions 
 
 Get the density of large trees (>50 or 60 cm dbh) per quadrat in the analyses of plot data, and use that as well.  
 
@@ -31,10 +31,10 @@ Update to using the 2023 50-ha plot data as far as possible, but this would requ
 Would be nice to include liana stem density and basal area per quadrat in the analyses as well; could request these from Stefan Schnitzer.  
 
 
-### Code and output
+# Background code and output
 
 
-# Make sure needed packages are available
+### Make sure needed packages are available
 
 Some R packages are used in the codes, and must be installed on the computer beforehand. The following code automatically installs the missing packages. 
 
@@ -119,7 +119,7 @@ for (i in 1:nrow(tls40centers)) {
 points(bci_habitat$x,bci_habitat$y,pch=as.numeric(as.factor(bci_habitat$habitat)),cex=0.5)
 
 ```
-### Canopy height data 
+## Canopy height data (from 2023 airborne lidar)
 
 Load the 20-m and 5-m mean and sd 2023 lidar-derived canopy height stats processed in whereTLSonBCI_part1b.Rmd.  (Note those weren't fully adjusted for the plot not being oriented perfectly N-S, so they are actually a few meters off in parts of the plot.)
 
@@ -152,7 +152,7 @@ lines(c(0,0,1000,1000,0),c(0,500,500,0,0))
 ```
 
 
-### Calculate forest structure stats by 20 x 20 quadrat 
+## Forest structure stats by 20 x 20 quadrat  (from 2015 census)
 
 Assumes have already run code to make df_quad from function agb_dyn_byquad to estimate quadrat-level annual AGB and AWP (in whereTLSonBCI_part2.rmd)
 
@@ -191,7 +191,7 @@ bci_habitat$x_y <- paste0(bci_habitat$x,"_",bci_habitat$y)
 ```
 
 
-### Map habitat types
+## Map habitat types
 
 
 Make figures of the habitat types 
@@ -236,7 +236,7 @@ ym <- matrix(agb2015$y,nrow=length(q20x),ncol=length(q20y))
 
 
 
-### Liana density
+## Liana density
 
 Just liana stem map from Schnitzer et al. 2023 to figure out how to display it. 
 
@@ -283,7 +283,7 @@ for (i in 1:nrow(dend40centers)) {
 
 points(bci_habitat$x,bci_habitat$y,pch=as.numeric(as.factor(bci_habitat$habitat)),cex=0.5)
 ```
-### Maps of AGB and N10, untransformed and log-transformed, by 20x20 
+## Maps of AGB and N10, untransformed and log-transformed, by 20x20 
 
 ```{r figs-by-q20}
 
@@ -319,7 +319,7 @@ image.plot(q20x,q20y,log(agb2015mbyq20), main = "log(AGB) 2015, Mg/ha, by 20x20"
 image.plot(q20x,q20y,log(n10y2015mbyq20), main = "log(N10) 2015, per ha, by 20x20")
 ```
 
-# Load and map crown-distributed AGB, and compare with stem-localized
+## Load and map crown-distributed AGB, and compare with stem-localized
 
 ```{r map-crown-dist-agb}
 load("usedata/cachecrown.rda")
@@ -338,7 +338,7 @@ image.plot(q20x,q20y,agb2015mbyq20, main = "Stem-localized AGB 2015, Mg/ha, by 2
 image.plot(q20x,q20y,cagb2015mbyq20, main = "Crown-distributed AGB 2015, Mg/ha, by 20x20")
 ```
 
-### Get 1-ha running means and sds of stats of interest and map them 
+## Get 1-ha running means and sds of stats of interest and map them 
 
 Function to do running means of matrices. 
 
@@ -539,7 +539,7 @@ canhtquant <- matrix(rank(canhtuse),nrow=nrow(canhtuse),ncol=ncol(canhtuse))/nto
 
 
 
-Make figures of habitat heterogeneity.  
+## Figures of habitat heterogeneity.  
 
 ```{r}
 image.plot(q20x,q20y,mainhabitatm, main="Dominant topographic habitat type in 1-ha subplot",col=rainbow(7))
@@ -559,7 +559,9 @@ points(df1ha$xcenter[inc],df1ha$ycenter[inc],pch=16)
 
 ```
 
-Make figures of AGB density at 1-ha scale  
+## Figures of forest structure metrics at 1-ha scales (spatial averages)
+
+### Figures of AGB density at 1-ha scale  
 
 ```{r get-1ha-agb}
 
@@ -627,7 +629,7 @@ points(bci_habitat$x,bci_habitat$y,pch=as.numeric(as.factor(bci_habitat$habitat)
 ```
 
 
-Make figures of BA density for 1-ha areas centered on each quadrat.
+### Figures of BA density at 1-ha scales
 
 ```{r get-1ha-ba}
 
@@ -682,7 +684,7 @@ contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
 ```
 
 
-Get the N>10 density for 1-ha areas centered on each quadrat and make figures of it.  
+### Figures of N>10 density at 1-ha scales  
 
 ```{r get-1ha-n10}
 
@@ -736,7 +738,7 @@ contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
 
 ```
 
-Get 1-ha means of canopy height and make maps of these.  
+## Figures of mean canopy height at 1-ha scales  
 
 ```{r het-1ha-canht}
 # recall that q20canht2023 is a data.frame
@@ -798,7 +800,7 @@ contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
 ```
 
 
-### Proposed locations of 1-ha plots
+# Proposed locations of 1-ha plots
 
 
 ```{r define-proposed-1-ha}
@@ -834,7 +836,7 @@ for (i in 1:nnew) {
 }
 ```
 
-Function to make figures illustrating where TLS plots fall with respect to one focal variable
+### Function to make figures illustrating where TLS plots fall with respect to one focal variable
 
 ```{r}
 wheretls1var <- function(df1ha,zvarname,zvartitle) {
@@ -872,7 +874,9 @@ wheretls1var <- function(df1ha,zvarname,zvartitle) {
 }
 ```
 
-Now run these functions for variables of interest.  We want to subplots to span plot-level variation in the following mean variables (so better if more different in pdfs and cdfs).  
+## Figures showing subplot locations and quantiles for mean variables of interest.
+
+Note that we want to subplots to span plot-level variation in the following mean variables (so better if more different in pdfs and cdfs).  
 
 ```{r}
 wheretls1var(df1ha,"mnagb","Mean AGB Density (Mg/ha) in 1-ha subplots")
@@ -882,7 +886,9 @@ wheretls1var(df1ha,"mnn10","Mean Density Trees >= 10 cm DBH in 1-ha subplots")
 
 ```
 
-Use the same functions to check heterogeneity within subplots.  We want the chosen subplots to show low variation within subplots.  They don't need to be the lowest possible, but they shouldn't be in the highest range of within-plot variation.  
+## Evaluate heterogeneity within subplots. 
+
+We want the chosen subplots to show low variation within subplots.  They don't need to be the lowest possible, but they shouldn't be in the highest range of within-plot variation.  
 
 ```{r}
 # first check how sds and cvs vary with means
@@ -897,6 +903,7 @@ wheretls1var(df1ha,"cvcanht","CV (over 20x20s) of Mean Canopy Height in 1-ha sub
 wheretls1var(df1ha,"cvba","CV (over 20x20s) of Basal Area Density in 1-ha subplots")
 wheretls1var(df1ha,"cvn10","CV (over 20x20s) of N Trees>= 10 cm in 1-ha subplots")
 ```
+## Variation across 1-ha subplots in relation to habitat type
 
 Evaluate to what degree habitat type explains variation across 1-ha subplots, and see where proposed TLS plots fall within relevant datasets.  
 
@@ -948,7 +955,9 @@ focvarvshab1ha(df1ha,"mnba","Mean Basal Area")
 
 
 
-Show positions of these plots in scatterplots of pairs of variables, with symbols indicating habitat type
+## Positions of plots in scatterplots of pairs of variables
+
+Here symbols indicate habitat type
 
 
 ```{r show-in-scatterplots}
@@ -1023,185 +1032,7 @@ foc2varvshab1ha(df1ha,z1varname="mnagb",z2varname="mncanht",
 ```
 
 
-
-Old way of doing this 
-
-```{r show-new-in-scatterplots}
-
-par(mar=c(5,4,4,8),xpd=TRUE)
-plot(n10use,bause,xlab="N >= 10 cm in 1-ha subplots in 2015",
-     ylab="Basal area in 1-ha subplots in 2015",cex=0.5,pch=16,col="grey")
-points(newtlscenters$n10,newtlscenters$ba,col=cols,pch=16)
-legend("topright",inset=c(-0.2,0),legend=seq(1,nnew),pch=16,col=cols[1:nnew])
-
-plot(n10quant,baquant,xlab="Quantile N >= 10 cm in 1-ha subplots in 2015",
-     ylab="Quantile Basal area in 1-ha subplots in 2015",cex=0.5,pch=16,col="grey")
-points(newtlscenters$n10quant,newtlscenters$baquant,col=cols,pch=16)
-legend("topright",inset=c(-0.2,0),legend=seq(1,nnew),pch=16,col=cols[1:nnew])
-
-
-par(mar=c(5,4,4,8),xpd=TRUE)
-plot(n10use,agbuse,xlab="N >= 10 cm in 1-ha subplots in 2015",
-     ylab="AGB in 1-ha subplots in 2015",cex=0.5,pch=16,col="grey")
-points(newtlscenters$n10,newtlscenters$agb,col=cols,pch=16)
-legend("topright",inset=c(-0.2,0),legend=seq(1,nnew),pch=16,col=cols[1:nnew])
-
-plot(n10quant,agbquant,xlab="Quantile N >= 10 cm in 1-ha subplots in 2015",
-     ylab="Quantile AGB in 1-ha subplots in 2015",cex=0.5,pch=16,col="grey")
-points(newtlscenters$n10quant,newtlscenters$agbquant,col=cols,pch=16)
-legend("topright",inset=c(-0.2,0),legend=seq(1,nnew),pch=16,col=cols[1:nnew])
-
-
-par(mar=c(5,4,4,8),xpd=TRUE)
-plot(canhtuse,agbuse,xlab="Mean Canopy Height in 2023",
-     ylab="AGB in 1-ha subplots in 2015",cex=0.5,pch=16,col="grey")
-points(newtlscenters$canht,newtlscenters$agb,col=cols,pch=16)
-legend("topright",inset=c(-0.2,0),legend=seq(1,nnew),pch=16,col=cols[1:nnew])
-
-plot(canhtquant,agbquant,xlab="Quantile Mean Canopy Height in 1-ha subplots in 2015",
-     ylab="Quantile AGB in 1-ha subplots in 2015",cex=0.5,pch=16,col="grey")
-points(newtlscenters$canhtquant,newtlscenters$agbquant,col=cols,pch=16)
-legend("topright",inset=c(-0.2,0),legend=seq(1,nnew),pch=16,col=cols[1:nnew])
-
-
-```
-
-
-
-
-Map locations of these plots relative to variables of interest
-
-```{r show-proposed-1ha}
-image.plot(q20x,q20y,cagb2015mbyq20,main="Crown-distributed 20x20 AGB density (Mg/ha) in 2015 & Habitat type")
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col="forest green")
-  
-}
-points(bci_habitat$x,bci_habitat$y,pch=as.numeric(as.factor(bci_habitat$habitat)),cex=0.6)
-contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
-
-
-
-image.plot(q20x,q20y,sqrt(cagb2015mbyq20),main="Sqrt Crown-distributed 20x20 AGB density (Mg/ha) in 2015 & All subplots")
-for (i in 1:nrow(dend40centers)) {
-lines(rep(dend40centers$x[i]-20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(rep(dend40centers$x[i]+20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]-20,2))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]+20,2))
-}
-for (i in 1:nrow(tls40centers)) {
-  lines(x=rep(tls40centers$x[i]-20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=rep(tls40centers$x[i]+20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]-20,2),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]+20,2),lwd=2)
-}
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col="forest green")
-  
-}
-contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
-
-image.plot(q20x,q20y,agb2015by1ha,main="1-ha mean AGB density (Mg/ha) in 2015 & All subplots")
-for (i in 1:nrow(dend40centers)) {
-lines(rep(dend40centers$x[i]-20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(rep(dend40centers$x[i]+20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]-20,2))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]+20,2))
-}
-for (i in 1:nrow(tls40centers)) {
-  lines(x=rep(tls40centers$x[i]-20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=rep(tls40centers$x[i]+20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]-20,2),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]+20,2),lwd=2)
-}
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col="forest green")
-  
-}
-contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
-
-
-image.plot(q20x,q20y,ba2015by1ha,main="1-ha mean BA density (m2/ha) in 2015 & All subplots")
-for (i in 1:nrow(dend40centers)) {
-lines(rep(dend40centers$x[i]-20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(rep(dend40centers$x[i]+20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]-20,2))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]+20,2))
-}
-for (i in 1:nrow(tls40centers)) {
-  lines(x=rep(tls40centers$x[i]-20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=rep(tls40centers$x[i]+20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]-20,2),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]+20,2),lwd=2)
-}
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col="forest green")
-  
-}
-contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
-
-
-image.plot(q20x,q20y,n10y2015by1ha,main="1-ha mean N>10cm density (/ha) in 2015 & All subplots")
-for (i in 1:nrow(dend40centers)) {
-lines(rep(dend40centers$x[i]-20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(rep(dend40centers$x[i]+20,2),c(dend40centers$y[i]-20,dend40centers$y[i]+20))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]-20,2))
-lines(c(dend40centers$x[i]-20,dend40centers$x[i]+20),rep(dend40centers$y[i]+20,2))
-}
-for (i in 1:nrow(tls40centers)) {
-  lines(x=rep(tls40centers$x[i]-20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=rep(tls40centers$x[i]+20,2), y=c(tls40centers$y[i]-20,tls40centers$y[i]+20),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]-20,2),lwd=2)
-  lines(x=c(tls40centers$x[i]-20,tls40centers$x[i]+20), y=rep(tls40centers$y[i]+20,2),lwd=2)
-}
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col="forest green")
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col="forest green")
-  
-}
-points(bci_habitat$x,bci_habitat$y,pch=as.numeric(as.factor(bci_habitat$habitat)),cex=0.6)
-contour(p5x,p5y,elevm5,add=T,nlevels=10,drawlabels=F,col="blue")
-
-
-
-
-```
-# Canopy height with proposed plots 
-
-```{r canht-1ha}
-#image.plot(xs,ys,lidar2023rev2,col=gray.colors(20),main="Lidar canopy height May 2023 and proposed 1-ha plots ",xlab="",ylab="")
-image.plot(x5s,y5s,mnch23p5,col=heat.colors(20),
-           main="5-m Mean Lidar canopy height May 2023 and proposed 1-ha plots",xlab="",ylab="")
-lines(c(0,0,1000,1000,0),c(0,500,500,0,0))
-
-#image.plot(xs,ys,lidar2023rev2,col=gray.colors(20),main="Lidar canopy height May 2023 and proposed 1-ha plots ",xlab="",ylab="")
-#lines(c(0,0,1000,1000,0),c(0,500,500,0,0))
-col1ha <- "blue"
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col=col1ha)
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col=col1ha)
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col=col1ha)
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col=col1ha)
-}
-
-
-```
-
-# Liana stem map and proposed plots
+## Proposed plots in relation to liana stem map
 
 ```{r}
 plot(c(0,0,1000,1000),c(0,500,0,500),pch=16, main = "Liana stem map and potential 1-ha plots")
@@ -1217,26 +1048,6 @@ for (i in 1:nrow(newtlscenters)) {
 
 ```
 
-# Canopy height and liana stem map and proposed plots 
-
-```{r canht-liana-plots}
-
-#image.plot(xs,ys,lidar2023rev2,col=gray.colors(20),main="Canopy height May 2023 and Liana stems and Proposed 1-ha",xlab="",ylab="")
-image.plot(x5s,y5s,mnch23p5,col=gray.colors(20),
-           main="5-m Mean Lidar canopy height May 2023 and Liana stems and Proposed 1-ha",xlab="",ylab="")
-#image.plot(xs,ys,lidar2023rev2,col=gray.colors(20),main="Canopy height May 2023 and Liana stems and Proposed 1-ha",xlab="",ylab="")
-rasterImage(lianamap4,xleft=-offset,ybottom=-offset,xright=1000+offset,ytop=500+offset)
-lines(c(0,0,1000,1000,0),c(0,500,500,0,0))
-#points(bci_habitat$x,bci_habitat$y,pch=as.numeric(as.factor(bci_habitat$habitat)),cex=0.6)
-col1ha <- "black"
-for (i in 1:nrow(newtlscenters)) {
-  lines(x=rep(newtlscenters$x[i]-50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col=col1ha)
-  lines(x=rep(newtlscenters$x[i]+50,2), y=c(newtlscenters$y[i]-50,newtlscenters$y[i]+50),lwd=3,lty=3,col=col1ha)
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]-50,2),lwd=3,lty=3,col=col1ha)
-  lines(x=c(newtlscenters$x[i]-50,newtlscenters$x[i]+50), y=rep(newtlscenters$y[i]+50,2),lwd=3,lty=3,col=col1ha)
-}
-
-```
 
 
 
