@@ -10,3 +10,5 @@ This code was written by Helene Muller-Landau and Camille Piponiot.
 **whereTLSonBCI_part2.Rmd**  Calculate quadrat-level tree census stats for the BCI 50-ha plot, and save these to "usedata/cachequad.rda" and "usedata/cachecrown.rda".
 
 **whereTLSonBCI_part3.Rmd**  Make figures relevant for choosing where to locate the 1-ha plots for TLS data collection.  
+
+**usedata** Contains data and data products used here.  
