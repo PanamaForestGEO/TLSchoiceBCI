@@ -1,0 +1,54 @@
+---
+title: 'Where to place TLS plots in BCI: (1a) download tree data'
+author: "Helene Muller-Landau and Camille Piponiot"
+date: "2023-09-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Purpose
+
+This code downloads the BCI 50-ha plot tree census data, for use in calculations under whereTLSonBCI_part2.Rmd.  
+
+# History
+
+This code was repurposed from code written by Camille Piponiot for the following book chapter:  
+
+Piponiot, C., R. Condit, S. P. Hubbell, R. Pérez, S. Aguilar, and H. C. Muller-Landau. 2023. Woody Biomass Stocks and Fluxes in the Barro Colorado Island 50 ha Plot. In The First 100 Years of Research on Barro Colorado: Plant and Ecosystem Science, ed. H. C. Muller-Landau and S. J. Wright: Smithsonian Institution Scholarly Press
+
+
+# Make sure needed packages are available
+
+Some R packages are used in the codes, and must be installed on the computer beforehand. The following code automatically installs the missing packages. 
+
+```{r install-packages}
+# list of package dependencies
+req_packages <- c("rdryad", "data.table", "utils", "truncnorm", "openxlsx", "docxtractr","ggplot2", "readxl")
+
+# packages that are not yet installed on the computer
+ins_packages <-  req_packages[!(req_packages %in% rownames(installed.packages()))]
+
+# install missing packages
+if (length(ins_packages) > 0) 
+  install.packages(ins_packages)
+```
+
+
+## Download tree census data 
+
+Census data was downloaded from an online Dryad repository [@Condit2019]. Census data contain 8 censuses of the Barro Colorado 50-ha plot, from 1981 to 2015, of all stems from 1 cm of diameter at breast height (`dbh`).
+
+```{r download-bci-data}
+dryad_data_path <- rdryad::dryad_download("10.15146/5xcp-0d46")
+
+# unzip files
+zip_files <- grep("\\.zip", dryad_data_path$`10.15146/5xcp-0d46`, value = TRUE)
+zip_folders <- sapply(zip_files, function(dir) {
+  name <- gsub("\\.zip", "", data.table::last(strsplit(dir, '/')[[1]]))
+  utils::unzip(dir, exdir = name)
+})
+```
+
+
